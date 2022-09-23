@@ -19,7 +19,7 @@ def create_app(test_config=None):
 
     db.app = app 
     db.init_app(app)
-    db.create_all()
+    #db.create_all()
 
     app.register_blueprint(auth)
     app.register_blueprint(bookmarks)
