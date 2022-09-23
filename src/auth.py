@@ -1,4 +1,6 @@
+from tabnanny import check
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import create_access_token, create_refresh_token
 from itsdangerous import json
 from markupsafe import re
 import validators
@@ -46,6 +48,32 @@ def register():
                             "username": username,
                             "email": email}
                         }), 201
+
+
+@auth.post("/login")
+def login():
+    email = request.json.get("email")
+    password = request.json.get("password")
+
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        pass_correct = check_password_hash(user.password, password)
+
+        if pass_correct:
+            refresh = create_refresh_token(identity=user.id)
+            access = create_access_token(identity=user.id)
+
+            return jsonify({
+                'user' : {
+                    'refresh' : refresh,
+                    'access'  : access,
+                    'username' : user.email,
+                    'email' : user.email
+                }
+            })
+    return 
+
 @auth.get("/me")
 def me():
     return jsonify({"user": "me"})
