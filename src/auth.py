@@ -1,6 +1,6 @@
 from tabnanny import check
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token
 from itsdangerous import json
 from markupsafe import re
 import validators
@@ -10,6 +10,7 @@ from src.database import User, db
 auth = Blueprint("auth", __name__ , url_prefix="/api/v1/auth")
 
 @auth.post("/register")
+@jwt_required()
 def register():
     username = request.json.get('username')
     email = request.json.get('email')
