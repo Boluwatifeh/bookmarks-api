@@ -70,9 +70,11 @@ def login():
                     'access'  : access,
                     'username' : user.email,
                     'email' : user.email
-                }
-            })
-    return 
+                }, 
+            }), 200
+    return jsonify({
+        'error' : "wrong credentials"
+    }), 401
 
 @auth.get("/me")
 def me():
