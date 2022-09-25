@@ -78,5 +78,6 @@ def login():
     }), 401
 
 @auth.get("/me")
+@jwt_required()
 def me():
     return jsonify({"user": "me"})
