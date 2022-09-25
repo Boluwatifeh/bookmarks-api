@@ -1,6 +1,6 @@
 from tabnanny import check
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token
+from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token, get_jwt_identity
 from itsdangerous import json
 from markupsafe import re
 import validators
@@ -80,4 +80,11 @@ def login():
 @auth.get("/me")
 @jwt_required()
 def me():
-    return jsonify({"user": "me"})
+    user_id = get_jwt_identity()
+
+    user = User.query.filter_by(id=user_id).first()
+    
+    return jsonify({
+        "username": user.username,
+        "email" : user.email
+        }), 200
