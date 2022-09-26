@@ -1,3 +1,4 @@
+from os import access
 from tabnanny import check
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token, get_jwt_identity
@@ -88,3 +89,13 @@ def me():
         "username": user.username,
         "email" : user.email
         }), 200
+
+@auth.get("/token/refresh")
+@jwt_required(refresh=True)
+def refresh_user_token():
+   id =  get_jwt_identity()
+   access = create_access_token(identity=id)
+
+   return jsonify({
+       "access_token" : access
+   }), 200
