@@ -22,7 +22,7 @@ def register():
                         "username is too short, Try again!"}), 400
     if not username.isalnum() or " " in username:
         return jsonify({"error": 
-                        "username should be alphanumeric and not contain whitespaces ! Try again"}), 400
+                        "username should be alphanumeric and not contain whitespaces, Try again!"}), 400
     if len(password) < 6:
         return jsonify({"error": 
                         "password is too short, Try again!"}), 400
