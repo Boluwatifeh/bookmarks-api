@@ -1,6 +1,4 @@
-from crypt import methods
 from operator import methodcaller
-from itsdangerous import json
 import validators
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -47,7 +45,10 @@ def get_bookmarks():
         }), 201
     
     else:
-        bookmarks = Bookmark.query.filter_by(user_id=current_user)
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('page', 1, type=int)
+
+        bookmarks = Bookmark.query.filter_by(user_id=current_user).paginate(page=page, per_page=per_page)
         
         data = []
 
