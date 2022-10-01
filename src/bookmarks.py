@@ -61,8 +61,19 @@ def get_bookmarks():
                 "created_at": bookmark.created_at,
                 "updated_at": bookmark.updated_at
             })
+        
+        metadata = {
+            "page": bookmarks.page,
+            "pages": bookmarks.pages,
+            "total_count" : bookmarks.total,
+            "next_page" : bookmarks.next_num,
+            "prev_page" : bookmarks.prev_num,
+            "has_next" : bookmarks.has_next,
+            "has_prev" : bookmarks.has_prev,
+        }
 
         return jsonify({
-            "data": data
+            "data": data,
+             "meta" : metadata
         }), 200
         
