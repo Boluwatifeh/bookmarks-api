@@ -1,4 +1,5 @@
 from operator import methodcaller
+from wsgiref.util import request_uri
 import validators
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -77,3 +78,25 @@ def get_bookmarks():
              "meta" : metadata
         }), 200
         
+
+@bookmarks.route("/<int:id>")
+@jwt_required()
+def get_bookmark(id):
+    current_user = get_jwt_identity()
+
+    bookmark = Bookmark.query.filter_by(user_id=current_user, id =id).first()
+
+    if not bookmark:
+        return jsonify({
+            "error" : "data not found"
+        }), 404
+    return jsonify({
+                "id": bookmark.id,
+                "body": bookmark.body,
+                "url": bookmark.url,
+                "short_url": bookmark.short_url,
+                "visits": bookmark.visits,
+                "created_at": bookmark.created_at,
+                "updated_at": bookmark.updated_at
+            }), 200
+
