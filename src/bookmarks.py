@@ -46,7 +46,7 @@ def get_bookmarks():
     
     else:
         page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('page', 10, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
 
         bookmarks = Bookmark.query.filter_by(user_id=current_user).paginate(page=page, per_page=per_page)
         data = []
