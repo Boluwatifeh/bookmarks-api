@@ -82,12 +82,13 @@ def get_bookmarks():
 def get_bookmark(id):
     current_user = get_jwt_identity()
 
-    bookmark = Bookmark.query.filter_by(user_id=current_user, id =id).first()
+    bookmark = Bookmark.query.filter_by(user_id=current_user, id=id).first()
 
     if not bookmark:
         return jsonify({
             "error" : "data not found"
         }), 404
+
     return jsonify({
                 "id": bookmark.id,
                 "body": bookmark.body,
@@ -98,3 +99,38 @@ def get_bookmark(id):
                 "updated_at": bookmark.updated_at
             }), 200
 
+@bookmarks.put("/<int:id>")
+@jwt_required()
+def edit_bookmark(id):
+    current_user = get_jwt_identity()
+
+    bookmark = Bookmark.query.filter_by(user_id=current_user, id=id).first()
+
+    if not bookmark:
+        return jsonify({
+            "error" : "data not found"
+        }), 404
+    body = request.get_json().get('body', "")
+    url = request.get_json().get('url', "")
+
+    if not validators.url(url):
+            return jsonify({
+                "error": "invalid url, try again!"
+            }), 400
+    
+    bookmark.body = body
+    bookmark.url = url
+
+    db.session.commit()
+
+    return jsonify({
+                "id": bookmark.id,
+                "body": bookmark.body,
+                "url": bookmark.url,
+                "short_url": bookmark.short_url,
+                "visits": bookmark.visits,
+                "created_at": bookmark.created_at,
+                "updated_at": bookmark.updated_at
+            }), 200
+
+    
