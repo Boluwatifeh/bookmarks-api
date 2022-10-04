@@ -134,3 +134,19 @@ def edit_bookmark(id):
             }), 200
 
     
+@bookmarks.delete("/<int:id>")
+@jwt_required()
+def delete_bookmark(id):
+    current_user = get_jwt_identity()
+
+    bookmark = Bookmark.query.filter_by(user_id=current_user, id=id).first()
+
+    if not bookmark:
+        return jsonify({
+            "error" : "data not found"
+        }), 404
+
+    db.session.delete(bookmark)
+    db.session.commit()
+
+    return jsonify({}), 204
