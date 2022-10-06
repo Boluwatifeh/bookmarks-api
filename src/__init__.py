@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 import os
 from src.auth import auth
 from src.bookmarks import bookmarks
-from src.database import db
+from src.database import Bookmark, db
 from flask_jwt_extended import JWTManager
 
 def create_app(test_config=None):
@@ -31,5 +31,16 @@ def create_app(test_config=None):
     @app.route("/")
     def index():
         return jsonify({"message": "Hello World"})
+
+    @app.get("/<short_url>")
+    def redirect_url(short_url):
+        bookmark = Bookmark.query.filter_by(short_url=short_url).first_or_404()
+
+        if bookmark: 
+            bookmark.visits = bookmark.visits+1
+            db.session.commit()
+            print(bookmark.url)
+            return redirect_url(bookmark.url)
+
     
     return app 
