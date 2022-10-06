@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect
 import os
 from src.auth import auth
 from src.bookmarks import bookmarks
@@ -40,7 +40,7 @@ def create_app(test_config=None):
             bookmark.visits = bookmark.visits+1
             db.session.commit()
             print(bookmark.url)
-            return redirect_url(bookmark.url)
+            return redirect(bookmark.url)
 
     
     return app 
