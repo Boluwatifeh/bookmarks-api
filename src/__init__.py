@@ -42,5 +42,12 @@ def create_app(test_config=None):
             print(bookmark.url)
             return redirect(bookmark.url)
 
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return jsonify({
+            "error" : "Page not found"
+        })
+
+
     
     return app 
