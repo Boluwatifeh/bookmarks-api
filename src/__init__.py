@@ -47,6 +47,11 @@ def create_app(test_config=None):
         return jsonify({
             "error" : "Page not found"
         })
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({
+            "error" : "Oooops, Something went wrong, we are working on it"
+        })
 
 
     
