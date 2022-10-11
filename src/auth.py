@@ -7,7 +7,7 @@ from src.database import User, db
 auth = Blueprint("auth", __name__ , url_prefix="/api/v1/auth")
 
 @auth.post("/register")
-@jwt_required()
+#@jwt_required()
 def register():
     username = request.json.get('username')
     email = request.json.get('email')
