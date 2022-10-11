@@ -6,3 +6,4 @@ src/bookmarks.db
 .vscode/
 venv/
 instance/
+src/database.db

@@ -20,10 +20,11 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    db.app = app 
-    db.init_app(app)
-    #db.create_all()
-    JWTManager(app)
+    with app.app_context():
+        db.app = app 
+        db.init_app(app)
+        #db.create_all()
+        JWTManager(app)
 
     app.register_blueprint(auth)
     app.register_blueprint(bookmarks)
