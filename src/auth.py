@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token, get_jwt_identity
-import validators
+import validators 
 from werkzeug.security import generate_password_hash, check_password_hash
 from src.database import User, db
 

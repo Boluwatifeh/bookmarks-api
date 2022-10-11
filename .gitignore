@@ -4,3 +4,5 @@ __pycache__/
 .env
 src/bookmarks.db
 .vscode/
+venv/
+instance/
