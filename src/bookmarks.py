@@ -1,3 +1,4 @@
+import json
 import validators
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -151,3 +152,25 @@ def delete_bookmark(id):
     db.session.commit()
 
     return jsonify({}), 204
+
+
+@bookmarks.get("/stats")
+@jwt_required()
+def get_stats():
+    current_user = get_jwt_identity()
+
+    data = []
+
+    bookmarks = Bookmark.query.filter_by(user_id=current_user).all()
+
+    for bookmark in bookmarks:
+        new_data = {
+            "id": bookmark.id,
+            "visits": bookmark.visits,
+            "url" : bookmark.url,
+            "short_url" : bookmark.short_url
+        }
+    
+        data.append(new_data)
+    
+    return jsonify({"data": data}), 200
