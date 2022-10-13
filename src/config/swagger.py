@@ -1,4 +1,5 @@
 template = {
+    "openapi": "3.0.0",
     "swagger": "3.0",
     "info": {
         "title" : "Bookmarks API",
