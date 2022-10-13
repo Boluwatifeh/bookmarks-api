@@ -28,7 +28,7 @@ template = {
             "bearerFormat" : "JWT"
                 }
         }
-    }
+}
 
 
 swagger_config = {
@@ -36,8 +36,8 @@ swagger_config = {
     ],
     "specs": [
         {
-            "endpoint": 'apispec',
-            "route": '/apispec.json',
+            "endpoint": 'apispec_1',
+            "route": '/apispec_1.json',
             "rule_filter": lambda rule: True,  # all in
             "model_filter": lambda tag: True,  # all in
         }
