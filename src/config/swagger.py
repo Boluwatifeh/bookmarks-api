@@ -19,19 +19,31 @@ template = {
         "https",
         "http"
     ],
-    "components": {
-        
-        "securitySchemes": {
-            "bearerAuth": {
-                "type" : "http",
-                "scheme" : "bearer",
-                "name" : "Authorization",
-                "in"   : "header",
-                "bearerFormat" : "JWT"
-                  }
-
-             }
-
+ 
+    "securitySchemes": {
+        "bearerAuth": {
+            "type" : "http",
+            "scheme" : "bearer",
+            "name" : "Authorization",
+            "bearerFormat" : "JWT"
+                }
+        }
     }
 
+
+swagger_config = {
+    "headers": [
+    ],
+    "specs": [
+        {
+            "endpoint": 'apispec',
+            "route": '/apispec.json',
+            "rule_filter": lambda rule: True,  # all in
+            "model_filter": lambda tag: True,  # all in
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    # "static_folder": "static",  # must be set by user
+    "swagger_ui": True,
+    "specs_route": "/"
 }
