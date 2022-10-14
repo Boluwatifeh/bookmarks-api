@@ -1,11 +1,13 @@
 Redirects to a fully qualified url
----
+--- 
 tags:
   - Bookmarks
 parameters:
   - in: path
     name: short_url
     required: true
+    schema:
+      type: string
 
 responses:
   302:
