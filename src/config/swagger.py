@@ -15,20 +15,42 @@ template = {
         }, 
         "version" : "1.0"
     },
-    "basePath": "/api/v1",
+      "servers": [
+        {
+          "url": "http://127.0.0.1:{port}/{basePath}",
+          "description": "The production API server",
+          "variables": {
+            "port": {
+              "enum": [
+                "5000",
+                "80"
+              ],
+              "default": "5000"
+            },
+            "basePath": {
+              "default": "api/v1"
+            }
+          }
+        }
+      ],
+    
     "schemes": [
         "https",
         "http"
     ],
- 
+    
+    "components" : {
     "securitySchemes": {
         "bearerAuth": {
             "type" : "http",
             "scheme" : "bearer",
             "name" : "Authorization",
-            "bearerFormat" : "JWT"
+            "in" :  "header",
+            "bearerFormat" : "JWT",
+            "description" : "JWT Authorization header using the bearer scheme. Example : \"Authorization: Bearer {token}\""
                 }
         }
+    }
 }
 
 
