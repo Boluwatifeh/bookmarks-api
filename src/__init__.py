@@ -46,11 +46,17 @@ def create_app(test_config=None):
     def redirect_url(short_url):
         bookmark = Bookmark.query.filter_by(short_url=short_url).first_or_404()
 
+
         if bookmark: 
             bookmark.visits = bookmark.visits+1
             db.session.commit()
             print(bookmark.url)
             return redirect(bookmark.url)
+        
+        else: 
+            return jsonify({
+                "error": "page not found"
+            }), 404
 
     @app.errorhandler(404)
     def page_not_found(error):
