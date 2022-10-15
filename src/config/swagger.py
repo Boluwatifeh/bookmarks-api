@@ -17,7 +17,7 @@ template = {
     },
       "servers": [
         {
-          "url": "http://127.0.0.1:{port}/{basePath}",
+          "url": "http://127.0.0.1:{port}",
           "description": "The production API server",
           "variables": {
             "port": {
