@@ -11,7 +11,7 @@ parameters:
       type: object
       required: 
        -"email"
-       - "password"
+       -"password"
       properties: 
         email:
           type: "email"
@@ -20,6 +20,8 @@ parameters:
           type: "string"
           format: "password"
           example: "********"
+
+          
 responses:
   200:
     description: After a sucessful login
