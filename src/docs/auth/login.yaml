@@ -1,0 +1,33 @@
+User log in
+---
+tags:
+  - Authentication
+parameters:
+  - name: body
+    description: The body contains user login details
+    in: body
+    required: true
+    schema:
+      type: object
+      required: 
+       -"email"
+       -"password"
+      properties: 
+        email:
+          type: "email"
+          example: "example@domain.com"
+        password: 
+          type: "string"
+          format: "password"
+          example: "********"
+
+          
+responses:
+  200:
+    description: After a sucessful login
+  
+  400:
+    description: Failure to login as a result of invalid data
+  
+  401: 
+    description: User input incorrect data
