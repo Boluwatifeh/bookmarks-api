@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, redirect
+from http import HTTPStatus
 import os
 from src.auth import auth
 from src.bookmarks import bookmarks
@@ -56,7 +57,7 @@ def create_app(test_config=None):
         else: 
             return jsonify({
                 "error": "page not found"
-            }), 404
+            }),HTTPStatus.NOT_FOUND
 
     @app.errorhandler(404)
     def page_not_found(error):

@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from http import HTTPStatus
 from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token, get_jwt_identity
 import validators 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,24 +17,24 @@ def register():
     
     if len(username) < 4:
         return jsonify({"error": 
-                        "username is too short, Try again!"}), 400
+                        "username is too short, Try again!"}), HTTPStatus.BAD_REQUEST
     if not username.isalnum() or " " in username:
         return jsonify({"error": 
-                        "username should be alphanumeric and not contain whitespaces, Try again!"}), 400
+                        "username should be alphanumeric and not contain whitespaces, Try again!"}), HTTPStatus.BAD_REQUEST
     if len(password) < 6:
         return jsonify({"error": 
-                        "password is too short, Try again!"}), 400
+                        "password is too short, Try again!"}), HTTPStatus.BAD_REQUEST
 
     if not validators.email(email):
         return jsonify({"error": 
-                        "email is invalid, Try again!"}), 4000
+                        "email is invalid, Try again!"}), HTTPStatus.BAD_REQUEST
 
     if User.query.filter_by(email=email).first() is not None:
         return jsonify({"error": 
-                        "email is taken, Try again!"}), 409
+                        "email is taken, Try again!"}), HTTPStatus.CONFLICT
     if User.query.filter_by(username=username).first() is not None:
         return jsonify({"error": 
-                        "username is taken, Try again!"}), 409
+                        "username is taken, Try again!"}), HTTPStatus.CONFLICT
     
     hashed_pwd = generate_password_hash(password)
     user = User(username=username, password=hashed_pwd, email=email )
@@ -46,7 +47,7 @@ def register():
                         "user": {
                             "username": username,
                             "email": email}
-                        }), 201
+                        }), HTTPStatus.CREATED
 
 
 @auth.post("/login")
@@ -71,10 +72,10 @@ def login():
                     'username' : user.email,
                     'email' : user.email
                 }, 
-            }), 200
+            }), HTTPStatus.OK
     return jsonify({
         'error' : "wrong credentials"
-    }), 401
+    }), HTTPStatus.UNAUTHORIZED
 
 @auth.get("/me")
 @jwt_required()
@@ -86,7 +87,7 @@ def me():
     return jsonify({
         "username": user.username,
         "email" : user.email
-        }), 200
+        }), HTTPStatus.OK
 
 @auth.get("/token/refresh")
 @jwt_required(refresh=True)
@@ -96,4 +97,4 @@ def refresh_user_token():
 
    return jsonify({
        "access_token" : access
-   }), 200
+   }), HTTPStatus.OK
