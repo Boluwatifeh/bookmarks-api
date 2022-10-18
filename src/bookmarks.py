@@ -1,4 +1,6 @@
+from email.policy import HTTP
 import validators
+from http import HTTPStatus
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -22,12 +24,12 @@ def get_bookmarks():
         if not validators.url(url):
             return jsonify({
                 "error": "invalid url, try again!"
-            }), 400
+            }), HTTPStatus.BAD_REQUEST
         
         if Bookmark.query.filter_by(url=url).first():
             return jsonify({
                 "error" : "Url already exists."
-            }), 409
+            }), HTTPStatus.CONFLICT
         bookmark = Bookmark(url=url, body=body, user_id=current_user)
         db.session.add(bookmark)
         db.session.commit()
@@ -41,7 +43,7 @@ def get_bookmarks():
             "created_at": bookmark.created_at,
             "updated_at": bookmark.updated_at
 
-        }), 201
+        }), HTTPStatus.CREATED
     
     else:
         page = request.args.get('page', 1, type=int)
@@ -74,7 +76,7 @@ def get_bookmarks():
         return jsonify({
             "data": data,
              "meta" : metadata
-        }), 200
+        }), HTTPStatus.OK
         
 
 @bookmarks.route("/<int:id>")
@@ -87,7 +89,7 @@ def get_bookmark(id):
     if not bookmark:
         return jsonify({
             "error" : "data not found"
-        }), 404
+        }), HTTPStatus.NOT_FOUND
 
     return jsonify({
                 "id": bookmark.id,
@@ -97,7 +99,7 @@ def get_bookmark(id):
                 "visits": bookmark.visits,
                 "created_at": bookmark.created_at,
                 "updated_at": bookmark.updated_at
-            }), 200
+            }), HTTPStatus.OK
 
 @bookmarks.put("/<int:id>")
 @bookmarks.patch("/<int:id>")
@@ -110,14 +112,14 @@ def edit_bookmark(id):
     if not bookmark:
         return jsonify({
             "error" : "data not found"
-        }), 404
+        }), HTTPStatus.NOT_FOUND
     body = request.get_json().get('body', "")
     url = request.get_json().get('url', "")
 
     if not validators.url(url):
             return jsonify({
                 "error": "invalid url, try again!"
-            }), 400
+            }), HTTPStatus.BAD_REQUEST
     
     bookmark.body = body
     bookmark.url = url
@@ -132,7 +134,7 @@ def edit_bookmark(id):
                 "visits": bookmark.visits,
                 "created_at": bookmark.created_at,
                 "updated_at": bookmark.updated_at
-            }), 200
+            }), HTTPStatus.OK
 
     
 @bookmarks.delete("/<int:id>")
@@ -145,12 +147,12 @@ def delete_bookmark(id):
     if not bookmark:
         return jsonify({
             "error" : "data not found"
-        }), 404
+        }), HTTPStatus.NOT_FOUND
 
     db.session.delete(bookmark)
     db.session.commit()
 
-    return jsonify({}), 204
+    return jsonify({}), HTTPStatus.NO_CONTENT
 
 
 @bookmarks.get("/stats")
@@ -172,4 +174,4 @@ def get_stats():
     
         data.append(new_data)
     
-    return jsonify({"data": data}), 200
+    return jsonify({"data": data}), HTTPStatus.OK
