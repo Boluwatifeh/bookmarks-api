@@ -73,6 +73,7 @@ def login():
                     'email' : user.email
                 }, 
             }), HTTPStatus.OK
+            
     return jsonify({
         'error' : "wrong credentials"
     }), HTTPStatus.UNAUTHORIZED

@@ -63,7 +63,8 @@ def create_app(test_config=None):
     def page_not_found(error):
         return jsonify({
             "error" : "Page not found"
-        })
+        },), HTTPStatus.NOT_FOUND
+
     @app.errorhandler(500)
     def server_error(error):
         return jsonify({
