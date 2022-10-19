@@ -1,4 +1,3 @@
-from email.policy import HTTP
 import validators
 from http import HTTPStatus
 from flask import Blueprint, jsonify, request
