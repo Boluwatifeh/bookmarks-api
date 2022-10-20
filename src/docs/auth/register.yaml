@@ -1,0 +1,39 @@
+User registration
+---
+tags:
+  - Authentication
+parameters:
+  - name: body
+    description: The body contains user registration details
+    in: body
+    required: true
+    schema:
+      type: object
+      required: 
+       -"username"
+       -"email"
+       -"password"
+      properties: 
+        username: 
+          type: "string"
+        email:
+          type: "email"
+          example: "example@domain.com"
+        password: 
+          type: "string"
+          format: "password"
+          example: "********"
+
+          
+responses:
+  200:
+    description: After an account has been created sucessfully
+  
+  400:
+    description: Failure to create account as a result of wrong data
+  
+  401: 
+    description: User input incorrect data
+
+  409:
+    description: Failure as a result of conflict
